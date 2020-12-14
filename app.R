@@ -1,11 +1,15 @@
+
+# install/load packages ---------------------------------------------------
+
+remotes::install_github("itsleeds/jts")
+remotes::install_github("robinlovelace/ukboundaries")
 library(shiny)
 library(shinydashboard)
 library(shinydashboardPlus)
 library(tmap)
 library(tidyverse)
-remotes::install_github("itsleeds/jts")
-remotes::install_github("robinlovelace/ukboundaries")
-jts0401 = jts::get_jts_data(table = "jts0401")
+
+# persistent settings -----------------------------------------------------
 
 s = c(
   `Grey basemap` = "CartoDB.Positron",
@@ -16,20 +20,23 @@ s = c(
   `Satellite image` = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'"
 )
 tms = c(FALSE, FALSE, FALSE, TRUE, TRUE, FALSE)
-
 jts_mode_names = c("PT", "Cyc", "Car")
 jtsm_collapsed = paste0(jts_mode_names, collapse = "|")
-
 jtsmt = paste0(jts_mode_names, "t")
 jtsmt_collapsed = paste0(jtsmt, collapse = "|")
+
+# get/preprocess data -----------------------------------------------------
+
+jts0401 = jts::get_jts_data(table = "jts0401")
 jts_data = jts0401 %>% 
   select(1:4, matches(jtsmt_collapsed) & matches("5000")) %>% 
   rename(code = LA_Code)
-
 lads = ukboundaries::lad2011_simple
 jts_data = left_join(lads, jts_data)
-
 jts_vars = setdiff(names(jts_data), c("name", "code", "altname", "geometry"))
+
+# run app (to split out into ui/server) -----------------------------------
+
 shinyApp(
   ui = dashboardPage(
     header = dashboardHeader(),
