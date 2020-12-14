@@ -27,13 +27,17 @@ jtsmt_collapsed = paste0(jtsmt, collapse = "|")
 
 # get/preprocess data -----------------------------------------------------
 
+jts_tables_sub = jts::jts_tables %>% 
+  filter(str_detect(table_code, "jts04"))
+services = unique(jts_tables_sub$service)
+length(destination_types)
 jts0401 = jts::get_jts_data(table = "jts0401")
 jts_data = jts0401 %>% 
   select(1:4, matches(jtsmt_collapsed) & matches("5000")) %>% 
   rename(code = LA_Code)
 lads = ukboundaries::lad2011_simple
 jts_data = left_join(lads, jts_data)
-jts_vars = setdiff(names(jts_data), c("name", "code", "altname", "geometry"))
+jts_vars = setdiff(names(jts_data), c("name", "code", "altname", "region", "geometry"))
 
 # run app (to split out into ui/server) -----------------------------------
 
@@ -42,7 +46,8 @@ shinyApp(
     header = dashboardHeader(),
     sidebar = dashboardSidebar(
       textInput(inputId = "location", label = "Zoom to location", placeholder = "Leeds", value = "Leeds"),
-      sliderInput(inputId = "slider1", label = "Demo slider", min = 0, max = 1, value = 0.3),
+      selectInput(inputId = "tableid", label = "Service (journey times to)", choices = services),
+      sliderInput(inputId = "slider1", label = "Transparency", min = 0, max = 1, value = 0.3),
       selectInput("var", "Variable", jts_vars)
     ),
     body = dashboardBody(
@@ -67,7 +72,7 @@ shinyApp(
       tmapProxy("map", session, {
         tm_remove_layer(401) +
           tm_shape(jts_data) +
-          tm_polygons(var, zindex = 401, alpha = input$slider1)
+          tm_polygons(var, zindex = 401, alpha = 1 - input$slider1)
       })
     })
   }
