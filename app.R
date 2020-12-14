@@ -7,6 +7,15 @@ remotes::install_github("itsleeds/jts")
 remotes::install_github("robinlovelace/ukboundaries")
 jts0401 = jts::get_jts_data(table = "jts0401")
 
+s = c(
+  `Grey basemap` = "CartoDB.Positron",
+  `Coloured basemap` = "Esri.WorldTopoMap",
+  `OSM existing cycle provision` = "https://b.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
+  `PCT commuting, Go Dutch` = "https://npttile.vs.mythic-beasts.com/commute/v2/dutch/{z}/{x}/{y}.png",
+  `PCT schools, Go Dutch` = "https://npttile.vs.mythic-beasts.com/school/v2/dutch/{z}/{x}/{y}.png",
+  `Satellite image` = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'"
+)
+tms = c(FALSE, FALSE, FALSE, TRUE, TRUE, FALSE)
 
 jts_mode_names = c("PT", "Cyc", "Car")
 jtsm_collapsed = paste0(jts_mode_names, collapse = "|")
@@ -38,11 +47,12 @@ shinyApp(
   ),
   server = function(input, output, session) {
     
-    output$map <- renderTmap({
+    output$map = renderTmap({
       bb = tmaptools::geocode_OSM(q = input$location)$bbox
       if(is.null(bb)) bb = sf::st_bbox(spData::lnd)
       tm_shape(jts_data, bbox = bb) +
-        tm_polygons(jts_vars[1], zindex = 401, alpha = 0.3)
+        tm_polygons(jts_vars[1], zindex = 401, alpha = 0.3) +
+        tm_basemap(server = s, tms = tms)
     })
     
     observe({
