@@ -23,11 +23,8 @@ jts_data = left_join(lads, jts_data)
 jts_vars = setdiff(names(jts_data), c("name", "code", "altname", "geometry"))
 shinyApp(
   ui = dashboardPage(
-    options = list(sidebarExpandOnHover = TRUE),
     header = dashboardHeader(),
     sidebar = dashboardSidebar(
-      minified = TRUE,
-      collapsed = TRUE,
       textInput(inputId = "location", label = "Zoom to location", placeholder = "Leeds", value = "Leeds"),
       sliderInput(inputId = "slider1", label = "Demo slider", min = 0, max = 1, value = 0.3),
       selectInput("var", "Variable", jts_vars)
