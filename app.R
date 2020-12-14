@@ -7,6 +7,7 @@ remotes::install_github("itsleeds/jts")
 remotes::install_github("robinlovelace/ukboundaries")
 jts0401 = jts::get_jts_data(table = "jts0401")
 
+
 jts_mode_names = c("PT", "Cyc", "Car")
 jtsm_collapsed = paste0(jts_mode_names, collapse = "|")
 
@@ -28,7 +29,7 @@ shinyApp(
       minified = TRUE,
       collapsed = TRUE,
       textInput(inputId = "location", label = "Zoom to location", placeholder = "Leeds", value = "Leeds"),
-      sliderInput(inputId = "slider1", label = "Demo slider", min = 0, max = 100, value = 50),
+      sliderInput(inputId = "slider1", label = "Demo slider", min = 0, max = 1, value = 0.3),
       selectInput("var", "Variable", jts_vars)
     ),
     body = dashboardBody(
@@ -43,7 +44,7 @@ shinyApp(
       bb = tmaptools::geocode_OSM(q = input$location)$bbox
       if(is.null(bb)) bb = sf::st_bbox(spData::lnd)
       tm_shape(jts_data, bbox = bb) +
-        tm_polygons(jts_vars[1], zindex = 401, alpha = 0.2)
+        tm_polygons(jts_vars[1], zindex = 401, alpha = 0.3)
     })
     
     observe({
@@ -51,7 +52,7 @@ shinyApp(
       tmapProxy("map", session, {
         tm_remove_layer(401) +
           tm_shape(jts_data) +
-          tm_polygons(var, zindex = 401, alpha = 0.2)
+          tm_polygons(var, zindex = 401, alpha = input$slider1)
       })
     })
   }
