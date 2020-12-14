@@ -30,6 +30,8 @@ jtsmt_collapsed = paste0(jtsmt, collapse = "|")
 jts_tables_sub = jts::jts_tables %>% 
   filter(str_detect(table_code, "jts04"))
 services = unique(jts_tables_sub$service)
+years = unique(jts_tables_sub$year)[1:4]
+modes = c("Walking + Public Transport", "Cycling", "Driving")
 length(destination_types)
 jts0401 = jts::get_jts_data(table = "jts0401")
 jts_data = jts0401 %>% 
@@ -37,7 +39,7 @@ jts_data = jts0401 %>%
   rename(code = LA_Code)
 lads = ukboundaries::lad2011_simple
 jts_data = left_join(lads, jts_data)
-jts_vars = setdiff(names(jts_data), c("name", "code", "altname", "region", "geometry"))
+jts_vars = setdiff(names(jts_data), c("name", "code", "altname", "Region", "LA_Name", "geometry"))
 
 # run app (to split out into ui/server) -----------------------------------
 
@@ -46,7 +48,9 @@ shinyApp(
     header = dashboardHeader(),
     sidebar = dashboardSidebar(
       textInput(inputId = "location", label = "Zoom to location", placeholder = "Leeds", value = "Leeds"),
-      selectInput(inputId = "tableid", label = "Service (journey times to)", choices = services),
+      selectInput(inputId = "tableid", label = "Service (journey times to, placeholder)", choices = services),
+      selectInput(inputId = "year", label = "Year (placeholder)", choices = years),
+      selectInput(inputId = "modes", label = "Mode of travel (placeholder)", choices = modes),
       sliderInput(inputId = "slider1", label = "Transparency", min = 0, max = 1, value = 0.3),
       selectInput("var", "Variable", jts_vars)
     ),
