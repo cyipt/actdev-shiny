@@ -76,7 +76,7 @@ shinyApp(
       tmapProxy("map", session, {
         tm_remove_layer(401) +
           tm_shape(jts_data) +
-          tm_polygons(var, zindex = 401, alpha = 1 - input$slider1)
+          tm_polygons(var, zindex = 401, alpha = 1 - input$slider1, palette = "viridis")
       })
     })
   }
