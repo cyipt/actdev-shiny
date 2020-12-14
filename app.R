@@ -30,6 +30,7 @@ shinyApp(
       selectInput("var", "Variable", jts_vars)
     ),
     body = dashboardBody(
+      tags$style(type = "text/css", "#map {height: calc(100vh - 150px) !important;}"),
       box(title = "Map", width = 12, tmap::tmapOutput(outputId = "map"))
     ),
     controlbar = dashboardControlbar(),
