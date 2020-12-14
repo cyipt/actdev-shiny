@@ -17,6 +17,7 @@ s = c(
   `OSM existing cycle provision` = "https://b.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
   `PCT commuting, Go Dutch` = "https://npttile.vs.mythic-beasts.com/commute/v2/dutch/{z}/{x}/{y}.png",
   `PCT schools, Go Dutch` = "https://npttile.vs.mythic-beasts.com/school/v2/dutch/{z}/{x}/{y}.png",
+  # `Historic map` = "https://nls-{s}.tileserver.com/nls/{z}/{x}/{y}.jpg'",
   `Satellite image` = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'"
 )
 tms = c(FALSE, FALSE, FALSE, TRUE, TRUE, FALSE)
