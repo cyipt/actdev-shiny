@@ -9,7 +9,6 @@ jts0401 = jts::get_jts_data(table = "jts0401")
 
 jts_mode_names = c("PT", "Cyc", "Car")
 jtsm_collapsed = paste0(jts_mode_names, collapse = "|")
-nm[!grepl(pattern = jtsm_collapsed, x = nm)]
 
 jtsmt = paste0(jts_mode_names, "t")
 jtsmt_collapsed = paste0(jtsmt, collapse = "|")
@@ -20,7 +19,7 @@ jts_data = jts0401 %>%
 lads = ukboundaries::lad2011_simple
 jts_data = left_join(lads, jts_data)
 
-jts_vars = setdiff(names(jts_data), c("name", "code", "geometry"))
+jts_vars = setdiff(names(jts_data), c("name", "code", "altname", "geometry"))
 shinyApp(
   ui = dashboardPage(
     options = list(sidebarExpandOnHover = TRUE),
