@@ -33,7 +33,6 @@ jts_tables_sub = jts::jts_tables %>%
 services = unique(jts_tables_sub$service)
 years = unique(jts_tables_sub$year)[1:4]
 modes = c("Walking + Public Transport", "Cycling", "Driving")
-length(destination_types)
 jts0401 = jts::get_jts_data(table = "jts0401")
 jts_data = jts0401 %>% 
   select(1:4, matches(jtsmt_collapsed) & matches("5000")) %>% 
