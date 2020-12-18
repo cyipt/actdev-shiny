@@ -52,6 +52,7 @@ shinyApp(
       selectInput(inputId = "tableid", label = "Service (journey times to, placeholder)", choices = services),
       selectInput(inputId = "year", label = "Year (placeholder)", choices = years),
       selectInput(inputId = "modes", label = "Mode of travel (placeholder)", choices = modes),
+      selectInput(inputId = "year", label = "Geographic level", choices = c("lsoa", "la"),
       sliderInput(inputId = "slider1", label = "Transparency", min = 0, max = 1, value = 0.3),
       selectInput("var", "Variable", jts_vars)
     ),
