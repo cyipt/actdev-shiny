@@ -1,9 +1,9 @@
 
 # install/load packages ---------------------------------------------------
 
-remotes::install_github("itsleeds/jts")
-remotes::install_github("robinlovelace/ukboundaries")
-devtools::install_github("RinteRface/shinydashboardPlus")
+# remotes::install_github("itsleeds/jts")
+# remotes::install_github("robinlovelace/ukboundaries")
+# devtools::install_github("RinteRface/shinydashboardPlus")
 library(shiny)
 library(shinydashboard)
 library(shinydashboardPlus)
